@@ -49,6 +49,12 @@ public class Astronaut {
        if(isNorth == false){
            dy = 0;
        }
+        if(isSouth == true){
+            dy = -2;
+        }
+        if(isSouth == false){
+            dy = 0;
+        }
         if(xpos < 0){ //bounce off the left wall
             dx = -dx;
         }
