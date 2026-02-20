@@ -13,8 +13,7 @@
 
 //Graphics Libraries
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.awt.*;
 import javax.swing.JFrame;
@@ -24,7 +23,7 @@ import javax.swing.JPanel;
 //*******************************************************************************
 // Class Definition Section
 
-public class BasicGameApp implements Runnable, KeyListener {
+public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
     //Variable Definition Section
     //Declare the variables used in the program
@@ -43,6 +42,7 @@ public class BasicGameApp implements Runnable, KeyListener {
     public Image astroPic;
     public Image astroidPic;
     public Image starsPic;
+    public boolean startGame;
     //Declare the objects used in the program
     //These are things that are made up of more than one variable type
     private Astronaut astro;
@@ -51,6 +51,7 @@ public class BasicGameApp implements Runnable, KeyListener {
     public Astronaut astro2;
     public Astroid astroid1;
     public Astroid astroid2;
+    public Rectangle startHitbox;
     // Main method definition
     // This is the code that runs first and automatically
     public static void main(String[] args) {
@@ -107,6 +108,9 @@ public class BasicGameApp implements Runnable, KeyListener {
         astroid2 = new Astroid(randx,randy);
         astroid2.dx = 5;
         astroid2.height = 15;
+
+   startHitbox = new Rectangle(100,100,100,100);
+
     }// BasicGameApp()
 
 
@@ -132,11 +136,13 @@ public class BasicGameApp implements Runnable, KeyListener {
     public void moveThings()
     {
         //calls the move( ) code in the objects
-        astro.move();
-        astro2.move();
-        astroid1.move();
-        astroid2.move();
-        crashng();
+        if (startGame == true) {
+            astro.move();
+            astro2.move();
+            astroid1.move();
+            astroid2.move();
+            crashng();
+        }
     }
 
     public void crashng() {
@@ -180,11 +186,13 @@ public class BasicGameApp implements Runnable, KeyListener {
 
         // creates a canvas which is a blank rectangular area of the screen onto which the application can draw
         // and trap input events (Mouse and Keyboard events)
+        //step 2: add mouse listener to canvas
         canvas = new Canvas();
 
         canvas.addKeyListener(this);
         canvas.setBounds(0, 0, WIDTH, HEIGHT);
         canvas.setIgnoreRepaint(true);
+        canvas.addMouseListener(this);
 
         panel.add(canvas);  // adds the canvas to the panel.
 
@@ -207,19 +215,23 @@ public class BasicGameApp implements Runnable, KeyListener {
     private void render() {
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
         g.clearRect(0, 0, WIDTH, HEIGHT);
-        g.drawImage(starsPic, 0, 0,  WIDTH, HEIGHT, null);
+        if (startGame == true) {
+
+            g.drawImage(starsPic, 0, 0, WIDTH, HEIGHT, null);
 
 
-        //draw the image of the astronaut
-        if (astro2.isAlive == true){
-            g.drawImage(astroPic, astro2.xpos, astro2.ypos, astro2.width, astro2.height, null);
+            //draw the image of the astronaut
+            if (astro2.isAlive == true) {
+                g.drawImage(astroPic, astro2.xpos, astro2.ypos, astro2.width, astro2.height, null);
+            }
+            g.drawImage(astroPic, astro.xpos, astro.ypos, astro.width, astro.height, null);
+
+            g.drawImage(astroidPic, astroid1.xpos, astroid1.ypos, astroid1.width, astroid1.height, null);
+            g.drawImage(astroidPic, astroid2.xpos, astroid2.ypos, astroid2.width, astroid2.height, null);
+            g.drawRect(astro.hitbox.x, astro.hitbox.y, astro.hitbox.width, astro.hitbox.height);
         }
-        g.drawImage(astroPic, astro.xpos, astro.ypos, astro.width, astro.height, null);
-
-        g.drawImage(astroidPic, astroid1.xpos, astroid1.ypos, astroid1.width, astroid1.height, null);
-        g.drawImage(astroidPic, astroid2.xpos, astroid2.ypos, astroid2.width, astroid2.height, null);
-        g.drawRect(astro.hitbox.x, astro.hitbox.y,astro.hitbox.width, astro.hitbox.height);
-
+        g.setColor(Color.blue);
+        g.fillRect(100,100,100,100);
         g.dispose();
 
         bufferStrategy.show();
@@ -242,10 +254,20 @@ public class BasicGameApp implements Runnable, KeyListener {
             astro.isNorth = true;
         }
 
-        if(e.getKeyCode() == 38){
-                System.out.println("going left");
+        if(e.getKeyCode() == 39){
+                System.out.println("going right");
                 astro.isEast = true;
         }
+        if(e.getKeyCode() == 40) {
+            System.out.println("going down");
+            astro.isSouth = true;
+        }
+            if (e.getKeyCode() == 37) {
+                System.out.println("going left");
+                astro.isWest = true;
+
+
+            }
 
 
 
@@ -259,6 +281,51 @@ public class BasicGameApp implements Runnable, KeyListener {
         if(e.getKeyCode() == 38){
             System.out.println("not going up");
          astro.isNorth = false;
+
+        }
+        if(e.getKeyCode() == 37 ) {
+            System.out.println("not going right");
+            astro.isEast = false;
+        }
+        if(e.getKeyCode() == 40) {
+            System.out.println("not going down");
+            astro.isSouth = false;
+        }
+        if(e.getKeyCode() == 39 ) {
+            System.out.println("not going left");
+            astro.isWest = false;
         }
     }
+//step 3:
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        System.out.println(e.getPoint());
+        Rectangle pointhitbox = new Rectangle(e.getX(), e.getY(), 1, 1);
+        if(startHitbox.intersects(pointhitbox)){
+            System.out.println("start game");
+            startGame = true;
+        }
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        System.out.println("mouse entered tbe screen");
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+    //Implement methods
 }

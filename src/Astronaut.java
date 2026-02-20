@@ -36,49 +36,58 @@ public class Astronaut {
         width = 60;
         height = 60;
         isAlive = true;
-        hitbox = new Rectangle(xpos,ypos,width,height);
+        hitbox = new Rectangle(xpos, ypos, width, height);
 
     } // constructor
 
     //The move method.  Everytime this is run (or "called") the hero's x position and y position change by dx and dy
     public void move() {
 
-       if(isNorth == true){
-           dy = -2;
-       }
-       if(isNorth == false){
-           dy = 0;
-       }
-        if(isSouth == true){
+        if (isNorth == true) {
             dy = -2;
         }
-        if(isSouth == false){
+        if (isNorth == false && isSouth == false) {
             dy = 0;
         }
-        if(xpos < 0){ //bounce off the left wall
-            dx = -dx;
+        if (isSouth == true) {
+            dy = 2;
         }
+        if (isEast == true) {
+            dx = -2;
+        }
+            if (isEast == false && isWest == false) {
+                dx = 0;
+            }
 
-        //bounce off right wall
-        if (xpos > 950) {
-            dx = -dx;
-        }
-        //bounce off top wall
-        if(ypos < 0){
-            dy=-dy;
-        }
-        //bounce off the bottom wall
-        if(ypos > 600){
-            dy = -dy;
-        }
+            if (isWest == true) {
+                dx = 2;
+            }
 
 
-        xpos = xpos + dx;
-        ypos = ypos + dy;
-        hitbox = new Rectangle(xpos,ypos,width,height);
-    }
+            if (xpos < 0) { //bounce off the left wall
+                dx = -dx;
+            }
+
+            //bounce off right wall
+            if (xpos > 950) {
+                dx = -dx;
+            }
+            //bounce off top wall
+            if (ypos < 0) {
+                dy = -dy;
+            }
+            //bounce off the bottom wall
+            if (ypos > 600) {
+                dy = -dy;
+            }
+
+
+            xpos = xpos + dx;
+            ypos = ypos + dy;
+            hitbox = new Rectangle(xpos, ypos, width, height);
+        }
+
 }
-
 
 
 
