@@ -325,7 +325,8 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
     @Override
     public void mouseExited(MouseEvent e) {
-
+        System.out.println("123");
+        System.out.println("The mouse has left the screen");
     }
     //Implement methods
 }
