@@ -16,6 +16,7 @@ import java.awt.Graphics2D;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.awt.*;
+import java.util.EnumSet;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -52,6 +53,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     public Astroid astroid1;
     public Astroid astroid2;
     public Rectangle startHitbox;
+
     // Main method definition
     // This is the code that runs first and automatically
     public static void main(String[] args) {
@@ -69,14 +71,14 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         setUpGraphics();
         //randomness
         //range 0-9
-        int randx = (int)(Math.random() * 10);
+        int randx = (int) (Math.random() * 10);
         //0.0001-0.9999
         //0.001 - 9.999
         //0.9 range
 
 
         //range to 1 - 10
-        randx = (int)(Math.random() * 10) + 1;
+        randx = (int) (Math.random() * 10) + 1;
         //0.001 = 0.999
         //0.01 = 9.99
         //0-9
@@ -84,12 +86,12 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
 
         //range 1 - 1000
-        randx = (int)(Math.random() * 1000) + 1;
+        randx = (int) (Math.random() * 1000) + 1;
 
         //TODO: make a variable called randy and make the range 1-700
 //range 1 - 700
 
-        int randy = (int)(Math.random() * 700) + 1;
+        int randy = (int) (Math.random() * 700) + 1;
 
         //variable and objects
         //create (construct) the objects needed for the game and load up
@@ -97,19 +99,19 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         astroidPic = Toolkit.getDefaultToolkit().getImage("astroid.png");//load the picture
         starsPic = Toolkit.getDefaultToolkit().getImage("stars.png");
 
-        astro = new Astronaut(100,100);
+        astro = new Astronaut(100, 100);
         astro.dx = -2;
-        astro2 = new Astronaut(randx,randy);
+        astro2 = new Astronaut(randx, randy);
         astro2.dx = 2;
         astro2.height = 90;
         astro2.width = 50;
 
-        astroid1 = new Astroid(randx,randy);
-        astroid2 = new Astroid(randx,randy);
+        astroid1 = new Astroid(randx, randy);
+        astroid2 = new Astroid(randx, randy);
         astroid2.dx = 5;
         astroid2.height = 15;
 
-   startHitbox = new Rectangle(100,100,100,100);
+        startHitbox = new Rectangle(100, 100, 100, 100);
 
     }// BasicGameApp()
 
@@ -133,8 +135,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     }
 
 
-    public void moveThings()
-    {
+    public void moveThings() {
         //calls the move( ) code in the objects
         if (startGame == true) {
             astro.move();
@@ -156,18 +157,18 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             astro2.dy = -astro2.dy;
             astro2.isAlive = false;
         }
-        if(astroid1.hitbox.intersects(astroid2.hitbox) && astroid2.isCrashing == false){
+        if (astroid1.hitbox.intersects(astroid2.hitbox) && astroid2.isCrashing == false) {
             System.out.println("astroid collision");
-            astroid1.height = astroid2.height+100;
+            astroid1.height = astroid2.height + 100;
             astroid2.isCrashing = true;
         }
-        if (!astroid1.hitbox.intersects(astroid2.hitbox)){
+        if (!astroid1.hitbox.intersects(astroid2.hitbox)) {
             astroid2.isCrashing = false;
         }
     }
 
     //Pauses or sleeps the computer for the amount specified in milliseconds
-    public void pause(int time){
+    public void pause(int time) {
         //sleep
         try {
             Thread.sleep(time);
@@ -231,7 +232,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             g.drawRect(astro.hitbox.x, astro.hitbox.y, astro.hitbox.width, astro.hitbox.height);
         }
         g.setColor(Color.blue);
-        g.fillRect(100,100,100,100);
+        g.fillRect(100, 100, 100, 100);
         g.dispose();
 
         bufferStrategy.show();
@@ -247,30 +248,27 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         System.out.println(e.getKeyCode());
 
 
-        if(e.getKeyCode() == 38) {
+        if (e.getKeyCode() == 38) {
             System.out.println("going up");
             // astro.ypos = astro.ypos-10;
 //           astro.dy = -Math.abs(astro.dy);
             astro.isNorth = true;
         }
 
-        if(e.getKeyCode() == 39){
-                System.out.println("going right");
-                astro.isEast = true;
+        if (e.getKeyCode() == 39) {
+            System.out.println("going right");
+            astro.isEast = true;
         }
-        if(e.getKeyCode() == 40) {
+        if (e.getKeyCode() == 40) {
             System.out.println("going down");
             astro.isSouth = true;
         }
-            if (e.getKeyCode() == 37) {
-                System.out.println("going left");
-                astro.isWest = true;
+        if (e.getKeyCode() == 37) {
+            System.out.println("going left");
+            astro.isWest = true;
 
 
-            }
-
-
-
+        }
 
     }
 
@@ -278,25 +276,26 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     public void keyReleased(KeyEvent e) {
         System.out.println("I stopped touching" + e.getKeyCode());
 
-        if(e.getKeyCode() == 38){
+        if (e.getKeyCode() == 38) {
             System.out.println("not going up");
-         astro.isNorth = false;
+            astro.isNorth = false;
 
         }
-        if(e.getKeyCode() == 37 ) {
+        if (e.getKeyCode() == 37) {
             System.out.println("not going right");
             astro.isEast = false;
         }
-        if(e.getKeyCode() == 40) {
+        if (e.getKeyCode() == 40) {
             System.out.println("not going down");
             astro.isSouth = false;
         }
-        if(e.getKeyCode() == 39 ) {
+        if (e.getKeyCode() == 39) {
             System.out.println("not going left");
             astro.isWest = false;
         }
     }
-//step 3:
+
+    //step 3:
     @Override
     public void mouseClicked(MouseEvent e) {
 
@@ -306,7 +305,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     public void mousePressed(MouseEvent e) {
         System.out.println(e.getPoint());
         Rectangle pointhitbox = new Rectangle(e.getX(), e.getY(), 1, 1);
-        if(startHitbox.intersects(pointhitbox)){
+        if (startHitbox.intersects(pointhitbox)) {
             System.out.println("start game");
             startGame = true;
         }
@@ -328,5 +327,28 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         System.out.println("123");
         System.out.println("The mouse has left the screen");
     }
-    //Implement methods
+    public void sumArray(){
+        System.out.println("sum: " + sum);
+        avg = sum/nums.length;
+        System.out.println("avg: " + avg);
+    }
+
+    public void maxNum() {
+
+
+    }
+
+    public void averageNum() {
+
+
+    }
+
+
+    public void minNum(){
+        
+    }
 }
+
+    //Implement methods
+
+
