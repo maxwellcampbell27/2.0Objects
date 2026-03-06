@@ -16,6 +16,7 @@ import java.awt.Graphics2D;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.EnumSet;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -53,6 +54,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     public Astroid astroid1;
     public Astroid astroid2;
     public Rectangle startHitbox;
+    public Astroid[] astroids;
 
     // Main method definition
     // This is the code that runs first and automatically
@@ -112,8 +114,11 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         astroid2.height = 15;
 
         startHitbox = new Rectangle(100, 100, 100, 100);
-
-    }// BasicGameApp()
+        astroids = new Astroid[5];
+        for(int i = 0; i<astroids.length; i++) {
+            astroids[i] = new Astroid(200, (int) (Math.random() * 700));
+        }
+    }// BasicGameApp()q
 
 
 //*******************************************************************************
@@ -143,6 +148,10 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             astroid1.move();
             astroid2.move();
             crashng();
+            for (int o = 0; o < astroids.length; o++) {
+            astroids[o].move();
+            }
+            
         }
     }
 
@@ -230,6 +239,10 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             g.drawImage(astroidPic, astroid1.xpos, astroid1.ypos, astroid1.width, astroid1.height, null);
             g.drawImage(astroidPic, astroid2.xpos, astroid2.ypos, astroid2.width, astroid2.height, null);
             g.drawRect(astro.hitbox.x, astro.hitbox.y, astro.hitbox.width, astro.hitbox.height);
+            for (int b = 0; b<astroids.length; b++) {
+                g.drawImage(astroidPic, astroids[0].xpos, astroids[0].ypos, astroids[0].width, astroids[0].height, null);
+
+            }
         }
         g.setColor(Color.blue);
         g.fillRect(100, 100, 100, 100);
@@ -327,28 +340,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         System.out.println("123");
         System.out.println("The mouse has left the screen");
     }
-    public void sumArray(){
-        System.out.println("sum: " + sum);
-        avg = sum/nums.length;
-        System.out.println("avg: " + avg);
-    }
-
-    public void maxNum() {
 
 
     }
-
-    public void averageNum() {
-
-
-    }
-
-
-    public void minNum(){
-        
-    }
-}
-
     //Implement methods
-
-
