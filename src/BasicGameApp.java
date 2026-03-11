@@ -115,9 +115,14 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
         startHitbox = new Rectangle(100, 100, 100, 100);
         astroids = new Astroid[5];
+
         for(int i = 0; i<astroids.length; i++) {
             astroids[i] = new Astroid(200, (int) (Math.random() * 700));
+
+            astroids[i].dx = (int) Math.random();
+            astroids[i].dy = (int) Math.random();
         }
+
     }// BasicGameApp()q
 
 
@@ -150,6 +155,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             crashng();
             for (int o = 0; o < astroids.length; o++) {
             astroids[o].move();
+
             }
             
         }
@@ -174,7 +180,14 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         if (!astroid1.hitbox.intersects(astroid2.hitbox)) {
             astroid2.isCrashing = false;
         }
+        for(int x = 0; x < astroids.length; x++){
+            if(astroids[x].hitbox.intersects(astro.hitbox)){
+                System.out.println("Astro crash");
+            }
+        }
     }
+
+    //todo: print astroid crash when ever one of the astroids in the astroid array hits either astro or astro2
 
     //Pauses or sleeps the computer for the amount specified in milliseconds
     public void pause(int time) {
@@ -240,7 +253,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             g.drawImage(astroidPic, astroid2.xpos, astroid2.ypos, astroid2.width, astroid2.height, null);
             g.drawRect(astro.hitbox.x, astro.hitbox.y, astro.hitbox.width, astro.hitbox.height);
             for (int b = 0; b<astroids.length; b++) {
-                g.drawImage(astroidPic, astroids[0].xpos, astroids[0].ypos, astroids[0].width, astroids[0].height, null);
+                g.drawImage(astroidPic, astroids[b].xpos, astroids[b].ypos, astroids[b].width, astroids[b].height, null);
 
             }
         }
